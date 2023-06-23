@@ -11,3 +11,5 @@ dane = pd.read_csv('pliki/AAPL_stock_price_example.csv', index_col='Date', parse
 # print(dane['2019-07-01':'2019-09-01'])
 print(dane.first('1M'))
 print(dane.last('1M'))
+print(dane.info())
+print(dane.describe())
