@@ -1,18 +1,36 @@
 import tkinter as tk
 
+
 def on_submit():
-    name = name_inp.get()
-    number = num_inp.get()
-    selected_idx = color_inp.curselection()
-    if selected_idx:
-        color = color_inp.get(selected_idx)
+    name = name_var.get()
+    try:
+        number = num_var.get()
+    except tk.TclError:
+        number = 1000
+
+    color = color_var.get()
+
+    sweet = sweet_label_inp.get('1.0',tk.END)
+
+    eater = eater_var.get()
+    plain = plain_var.get()
+
+    message = f'Dziękuje za wypełnienie ankiety, {name}\n'
+
+    if not eater:
+        message += 'Nie lubisz pączków :('
     else:
-        color = ''
-    sweet = sweet_label_inp.get('1.0', tk.END)
-    message = (
-        f'Dziękuje za wypełnienie ankiety, {name}\n'
-        f'Ciesz się z {number} {color} pączków!'
-    )
+        message += f'Ciesz się z {number} {color} pączków!'
+
+    if plain:
+        message += f'Warzywa są zdrowe!'
+    else:
+        message += f'Powinineś jeść warzywa a nie pączki!!!'
+
+    if sweet.strip():
+        message += f'Twój wiersz:\n{sweet}'
+
+
     output_line.configure(text=message)
     print(sweet)
 
@@ -28,29 +46,35 @@ title = tk.Label(
     bg='brown',
     fg='#FF0'
 )
+name_var = tk.StringVar(root)
 name_label = tk.Label(root, text='Podaj imię:')
-name_inp = tk.Entry(root)
+name_inp = tk.Entry(root, textvariable=name_var)
 
-eater_inp = tk.Checkbutton(root, text='Zaznacz jeśli jesz pączki')
+eater_var = tk.BooleanVar()
+eater_inp = tk.Checkbutton(root, text='Zaznacz jeśli jesz pączki', variable=eater_var)
 
-num_label = tk.Label(root, text='Ile bananów zjadasz?')
-num_inp = tk.Spinbox(root, from_=0, to=1000, increment=1)
+num_var = tk.IntVar(value=3)
+num_label = tk.Label(root, text='Ile pączków zjadasz?')
+num_inp = tk.Spinbox(root, from_=0, to=1000, increment=1, textvariable=num_var)
 
+color_var = tk.StringVar(value='Any')
 color_label = tk.Label(
     root,
     text='Jaki kolor pączka lubisz?'
 )
-color_inp = tk.Listbox(root, height=1)
+
 color_choices = (
     'Any', 'Brown', 'Pink', 'White', 'Green'
 )
-for choice in color_choices:
-    color_inp.insert(tk.END, choice)
+color_inp = tk.OptionMenu(
+    root, color_var, *color_choices
+)
 
 plain_label = tk.Label(root, text='Czy jadłeś warzywa?')
 plain_frame = tk.Frame(root)
-plain_yes_inp = tk.Radiobutton(plain_frame, text='Yes')
-plain_no_inp = tk.Radiobutton(plain_frame, text='No')
+plain_var = tk.BooleanVar()
+plain_yes_inp = tk.Radiobutton(plain_frame, text='Yes', value=True, variable=plain_var)
+plain_no_inp = tk.Radiobutton(plain_frame, text='No', value=False, variable=plain_var)
 
 sweet_label = tk.Label(
     root,
@@ -60,7 +84,8 @@ sweet_label_inp = tk.Text(root, height=3)
 submit_btn = tk.Button(root, text="Submit")
 submit_btn.configure(command=on_submit)
 
-output_line = tk.Label(root, text='', anchor='w', justify='left')
+output_var = tk.StringVar(value='')
+output_line = tk.Label(root, textvariable=output_var, text='', anchor='w', justify='left')
 
 title.grid(columnspan=2)
 name_label.grid(row=1, column=0)
