@@ -3,6 +3,8 @@ from urllib.error import HTTPError
 import pandas as pd
 from seaborn.utils import urlretrieve
 import os
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 # datafile = 'https://docs.misoenergy.org/marketreports/20210203_mom.xlsx'
 # mom_data = urlopen(datafile).read()
