@@ -10,7 +10,7 @@ def on_submit():
 
     color = color_var.get()
 
-    sweet = sweet_label_inp.get('1.0',tk.END)
+    sweet = sweet_label_inp.get('1.0', tk.END)
 
     eater = eater_var.get()
     plain = plain_var.get()
@@ -23,15 +23,14 @@ def on_submit():
         message += f'Ciesz się z {number} {color} pączków!'
 
     if plain:
-        message += f'Warzywa są zdrowe!'
+        message += f'Warzywa są zdrowe!\n'
     else:
-        message += f'Powinineś jeść warzywa a nie pączki!!!'
+        message += f'Powinineś jeść warzywa a nie pączki!!!\n'
 
     if sweet.strip():
         message += f'Twój wiersz:\n{sweet}'
 
-
-    output_line.configure(text=message)
+    output_var.set(message)
     print(sweet)
 
 
@@ -85,12 +84,14 @@ submit_btn = tk.Button(root, text="Submit")
 submit_btn.configure(command=on_submit)
 
 output_var = tk.StringVar(value='')
-output_line = tk.Label(root, textvariable=output_var, text='', anchor='w', justify='left')
+tk.Label(root, textvariable=output_var, anchor='w', justify='left').grid(row=100, columnspan=2, sticky='NSEW')
 
 title.grid(columnspan=2)
 name_label.grid(row=1, column=0)
 name_inp.grid(row=1, column=1)
-eater_inp.grid(row=2, columnspan=2, sticky=(tk.W + tk.E))
+num_label.grid(row=3, sticky='we')
+num_inp.grid(row=3, column=1, sticky=(tk.W + tk.E))
+eater_inp.grid(row=2, columnspan=2, sticky='we')
 color_label.grid(row=4, columnspan=2, sticky=tk.W, pady=10)
 color_inp.grid(row=5, columnspan=2, sticky=tk.W + tk.E, padx=25)
 
@@ -102,7 +103,6 @@ plain_frame.grid(row=7, columnspan=2, sticky=tk.W)
 sweet_label.grid(row=8, sticky=tk.W)
 sweet_label_inp.grid(row=9, columnspan=2, sticky='NSEW')
 submit_btn.grid(row=99)
-output_line.grid(row=100, columnspan=2, sticky='NSEW')
 
 root.columnconfigure(1, weight=1)
 root.rowconfigure(99, weight=2)
